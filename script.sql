@@ -5,15 +5,10 @@
 CREATE DATABASE marketplace;
 
 DROP TABLE IF EXISTS ticket_details;
-
 DROP TABLE IF EXISTS tickets;
-
 DROP TABLE IF EXISTS shipping_cost;
-
 DROP TABLE IF EXISTS products;
-
 DROP TABLE IF EXISTS users;
-
 DROP TABLE IF EXISTS contact;
 
 /*==============================================================*/
@@ -26,7 +21,7 @@ CREATE TABLE contact (
    telephone            VARCHAR(255)         NULL,
    subject              VARCHAR(255)         NULL,
    message              VARCHAR(1000)        NULL,
-   CONSTRAINT PK_contact PRIMARY KEY (idcontact)
+   CONSTRAINT pk_contact PRIMARY KEY (idcontact)
 );
 
 /*==============================================================*/
@@ -43,7 +38,7 @@ CREATE TABLE products (
    iva                  FLOAT8               NULL,
    codebar              VARCHAR(255)         NULL,
    sku                  VARCHAR(255)         NULL,
-   CONSTRAINT PK_products PRIMARY KEY (id_products)
+   CONSTRAINT pk_products PRIMARY KEY (id_products)
 );
 
 /*==============================================================*/
@@ -53,7 +48,7 @@ CREATE TABLE shipping_cost (
    id_shipping          VARCHAR(255)         NOT NULL,
    cost                 FLOAT8               NULL,
    region               VARCHAR(255)         NULL,
-   CONSTRAINT PK_shipping_cost PRIMARY KEY (id_shipping)
+   CONSTRAINT pk_shipping_cost PRIMARY KEY (id_shipping)
 );
 
 /*==============================================================*/
@@ -62,6 +57,7 @@ CREATE TABLE shipping_cost (
 CREATE TABLE tickets (
    id_tickets           SERIAL               NOT NULL,
    id_shipping          VARCHAR(255)         NULL,
+   id_users             INT4                 NULL,
    subtotal             FLOAT8               NULL,
    total                FLOAT8               NULL,
    contact              VARCHAR(255)         NULL,
@@ -71,7 +67,7 @@ CREATE TABLE tickets (
    razon_social         VARCHAR(255)         NULL,
    pay_method           VARCHAR(255)         NULL,
    status               VARCHAR(255)         NULL,
-   CONSTRAINT PK_tickets PRIMARY KEY (id_tickets)
+   CONSTRAINT pk_tickets PRIMARY KEY (id_tickets)
 );
 
 /*==============================================================*/
@@ -81,7 +77,7 @@ CREATE TABLE ticket_details (
    id_ticket_details    SERIAL               NOT NULL,
    id_tickets           INT4                 NULL,
    id_products          INT4                 NULL,
-   CONSTRAINT PK_ticket_details PRIMARY KEY (id_ticket_details)
+   CONSTRAINT pk_ticket_details PRIMARY KEY (id_ticket_details)
 );
 
 /*==============================================================*/
@@ -89,7 +85,6 @@ CREATE TABLE ticket_details (
 /*==============================================================*/
 CREATE TABLE users (
    id_users             SERIAL               NOT NULL,
-   id_tickets           INT4                 NULL,
    name                 VARCHAR(255)         NULL,
    lastname             VARCHAR(255)         NULL,
    email                VARCHAR(100)         NULL,
@@ -106,33 +101,34 @@ CREATE TABLE users (
    store_address        VARCHAR(255)         NULL,
    store_region         VARCHAR(255)         NULL,
    store_city           VARCHAR(255)         NULL,
-   CONSTRAINT PK_users PRIMARY KEY (id_users)
+   CONSTRAINT pk_users PRIMARY KEY (id_users)
 );
 
 ALTER TABLE products
-   ADD CONSTRAINT FK_products_vende_users FOREIGN KEY (id_users)
+   ADD CONSTRAINT fk_products_vende_users FOREIGN KEY (id_users)
       REFERENCES users (id_users)
       ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE tickets
-   ADD CONSTRAINT FK_tickets_tiene__co_shipping FOREIGN KEY (id_shipping)
+   ADD CONSTRAINT fk_tickets_reference_users FOREIGN KEY (id_users)
+      REFERENCES users (id_users)
+      ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE tickets
+   ADD CONSTRAINT fk_tickets_tiene_co_shipping FOREIGN KEY (id_shipping)
       REFERENCES shipping_cost (id_shipping)
       ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE ticket_details
-   ADD CONSTRAINT FK_ticket_d_tiene_det_products FOREIGN KEY (id_products)
+   ADD CONSTRAINT fk_ticket_d_tiene_det_products FOREIGN KEY (id_products)
       REFERENCES products (id_products)
       ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE ticket_details
-   ADD CONSTRAINT FK_ticket_d_tiene_det_tickets FOREIGN KEY (id_tickets)
+   ADD CONSTRAINT fk_ticket_d_tiene_det_tickets FOREIGN KEY (id_tickets)
       REFERENCES tickets (id_tickets)
       ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE users
-   ADD CONSTRAINT FK_users_compra_tickets FOREIGN KEY (id_tickets)
-      REFERENCES tickets (id_tickets)
-      ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 /* Crear usuarios con rol tienda */
