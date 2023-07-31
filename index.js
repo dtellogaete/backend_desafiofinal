@@ -16,12 +16,12 @@ const secretKey = process.env.TOKEN_SECRET;
 /*Crypto */
 const crypto = require('crypto');
 
-
-
 /* Import consultas DB*/
 const { addUser, 
         verifyLogin,  
         getUser,
+        getProduct,
+        getProducts,
         Auth,
       } = require('./db.js');
 const { error } = require('console');
@@ -56,14 +56,18 @@ app.post('/usuarios', async (req, res) => {
 /* GET Login */
 app.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;   
+    const { email, password } = req.body;  
+    
     const isValidCredentials = await verifyLogin(req.body);
+    console.log(isValidCredentials);
     if (isValidCredentials) {
-      // Generar el token utilizando jwt.sign() y la clave secreta      
-      const token = jwt.sign({ email }, secretKey, { expiresIn: 300 });
+      // Generar el token utilizando jwt.sign() y la clave secreta    
+      console.log(email);         
+      const token = jwt.sign({ email }, secretKey, { expiresIn: 600 });            
       res.status(200).json({ token });      
     } else {
       res.status(401).json({ error: 'Unauthorized', message: 'Credenciales inválidas' });
+     
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
@@ -71,17 +75,43 @@ app.post('/login', async (req, res) => {
 });
 
 /* GET Usuarios con JWT */
-app.get('/usuarios', async (req, res) => {
+app.get('/users', async (req, res) => {
   try {       
-    const authorization = req.header("Authorization");    
-   
+    const authorization = req.header("Authorization");  
+    console.log("authorization", authorization);    
+    
     const token = authorization.split("Bearer ")[1];    
-    //jwt.verify(token, secretKey);
-    const decodificado = jwt.decode(token, secretKey);
-   
+    console.log("token", token);
+    jwt.verify(token, secretKey);
+    const decodificado = jwt.decode(token, secretKey);   
     const usuarios = await getUser(decodificado.email);
     res.status(200).json(usuarios);
     } catch (error) {
     res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
   }
 });
+
+/* Backend Products */
+/* GET Product id */
+app.get('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await getProduct(id);
+        res.status(200).json(product);
+        }
+        catch (error) {
+        res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+        }
+});
+
+/* GET Producs */
+app.get('/products', async (req, res) => {
+    try {
+        const products = await getProducts();
+        res.status(200).json(products);
+        }
+        catch (error) {
+        res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+        }
+    }
+);

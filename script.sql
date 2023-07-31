@@ -38,6 +38,7 @@ CREATE TABLE products (
    iva                  FLOAT8               NULL,
    codebar              VARCHAR(255)         NULL,
    sku                  VARCHAR(255)         NULL,
+   photo                VARCHAR(255)         NULL,
    CONSTRAINT pk_products PRIMARY KEY (id_products)
 );
 
@@ -142,3 +143,19 @@ INSERT INTO users (name, lastname, email, rut, address, city, region, password, 
 VALUES
    ('Pedro', 'González', 'pedro@example.com', '11111111-1', 'Av. 10 de Julio 456', 'Santiago', 'Metropolitana', 'contrasena3', '987654321', 'cliente'),
    ('Ana', 'López', 'ana@example.com', '22222222-2', 'Calle Principal 789', 'Valparaíso', 'Valparaíso', 'contrasena4', '123456789', 'cliente');
+
+/* Agregar productos */ 
+INSERT INTO PRODUCTS (ID_USERS, NAME, BRAND, DESCRIPTION, VARIANT, PRICE, IVA, CODEBAR, SKU, PHOTO)
+VALUES
+  (1, 'Albahaca', 'Naturaleza', 'Hierba aromática conocida por su aroma y sabor.', 'Variante A', 5500, 0.19, 'AB-001', 'ALBA-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (2, 'Romero', 'Bosque', 'Hierba aromática utilizada en la cocina mediterránea.', 'Variante B', 5200, 0.19, 'RO-001', 'ROM-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (1, 'Menta', 'Naturaleza', 'Hierba refrescante con múltiples usos culinarios y medicinales.', 'Variante C', 5700, 0.19, 'ME-001', 'MEN-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (2, 'Orégano', 'Bosque', 'Hierba utilizada como condimento en diversos platos.', 'Variante D', 5300, 0.19, 'OR-001', 'ORE-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (1, 'Perejil', 'Naturaleza', 'Hierba aromática popular en diversas cocinas.', 'Variante E', 5100, 0.19, 'PE-001', 'PER-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (2, 'Tomillo', 'Bosque', 'Hierba con sabor terroso utilizada en la cocina mediterránea.', 'Variante F', 5000, 0.19, 'TO-001', 'TOM-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (1, 'Salvia', 'Naturaleza', 'Hierba con propiedades medicinales y culinarias.', 'Variante G', 5400, 0.19, 'SA-001', 'SAL-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (2, 'Cilantro', 'Bosque', 'Hierba utilizada en diversas gastronomías.', 'Variante H', 5100, 0.19, 'CI-001', 'CIL-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (1, 'Hierbabuena', 'Naturaleza', 'Hierba aromática refrescante para infusiones y cócteles.', 'Variante I', 5600, 0.19, 'HB-001', 'HBU-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (2, 'Ajenjo', 'Bosque', 'Hierba con sabor amargo utilizada en licores y bebidas.', 'Variante J', 5200, 0.19, 'AJ-001', 'AJE-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (1, 'Eneldo', 'Naturaleza', 'Hierba con sabor anisado utilizada en la cocina escandinava.', 'Variante K', 5200, 0.19, 'EN-001', 'ENE-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg'),
+  (2, 'Hinojo', 'Bosque', 'Hierba con sabor similar al anís y la menta.', 'Variante L', 5300, 0.19, 'HI-001', 'HIN-001', 'https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__medium/public/media/2019/04/23/menta_p.jpg');
