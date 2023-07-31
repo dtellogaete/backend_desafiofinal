@@ -22,6 +22,7 @@ const { addUser,
         getUser,
         getProduct,
         getProducts,
+        getProductUsers,
         Auth,
       } = require('./db.js');
 const { error } = require('console');
@@ -78,11 +79,11 @@ app.post('/login', async (req, res) => {
 app.get('/users', async (req, res) => {
   try {       
     const authorization = req.header("Authorization");  
-    console.log("authorization", authorization);    
-    
+       
     const token = authorization.split("Bearer ")[1];    
-    console.log("token", token);
+
     jwt.verify(token, secretKey);
+    console.log("token verificado")
     const decodificado = jwt.decode(token, secretKey);   
     const usuarios = await getUser(decodificado.email);
     res.status(200).json(usuarios);
@@ -115,3 +116,17 @@ app.get('/products', async (req, res) => {
         }
     }
 );
+
+/* GET Productos de Usuarios */
+app.get('/products/users/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const products = await getProductUsers(id);
+        res.status(200).json(products);
+        }
+        catch (error) {
+        res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+        }
+}
+);
+

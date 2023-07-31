@@ -71,7 +71,7 @@ const addUser = async (req) => {
   /* Get User */
   const getUser = async (req) => {
     try {        
-      const query = 'SELECT * FROM usuarios WHERE email = $1';
+      const query = 'SELECT * FROM users WHERE email = $1';
       const values = [req];
       const res = await pool.query(query, values);
       const user = res.rows[0];
@@ -107,6 +107,17 @@ const getProducts = async () => {
     }
 };
 
+/* Get Product Users */
+const getProductUsers = async (id_users) => {
+    try {
+      const query = 'SELECT * FROM products WHERE id_users = $1 LIMIT 100';
+      const values = [id_users];
+      const res = await pool.query(query, values);
+      const products = res.rows;
+      return products;
+    } catch (error) {
+      throw error;
+    }
+  };
 
-
-module.exports = { addUser, verifyLogin, getUser, getProduct, getProducts};
+module.exports = { addUser, verifyLogin, getUser, getProduct, getProducts, getProductUsers};

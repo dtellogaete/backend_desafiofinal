@@ -39,6 +39,7 @@ CREATE TABLE products (
    codebar              VARCHAR(255)         NULL,
    sku                  VARCHAR(255)         NULL,
    photo                VARCHAR(255)         NULL,
+   stock                INT4                 NULL,
    CONSTRAINT pk_products PRIMARY KEY (id_products)
 );
 
