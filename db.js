@@ -120,4 +120,73 @@ const getProductUsers = async (id_users) => {
     }
   };
 
-module.exports = { addUser, verifyLogin, getUser, getProduct, getProducts, getProductUsers};
+/* Add Products */
+const addProduct = async (req) => {
+  try {
+    const query =
+      'INSERT INTO products (id_users, name, brand, description, variant, price, iva, codebar, sku, photo, stock) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id_products';
+
+    const values = [
+      req.id_users,
+      req.name,
+      req.brand,
+      req.description,
+      req.variant,
+      parseFloat(req.price),
+      parseFloat(req.iva),
+      req.codebar,
+      req.sku,
+      req.photo,
+      parseInt(req.stock),
+    ];
+    console.log(values);
+    const result = await pool.query(query, values);
+    console.log(result);
+    return result.rows[0].id_products; // Devuelve el ID del producto recién insertado
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Comprar producto
+const addTicket = async (req) => {
+  try {
+    const query =
+      'INSERT INTO tickets (id_shipping, id_users, subtotal, total, contact, telephone, rut, city, razon_social, pay_method, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id_tickets';
+    const values = [
+      req.id_shipping,
+      req.id_users,
+      parseFloat(req.subtotal),
+      parseFloat(req.total),
+      req.contact,
+      req.telephone,
+      req.rut,
+      req.city,
+      req.razon_social,
+      req.pay_method,
+      req.status,
+    ];
+    console.log(values);
+    const result = await pool.query(query, values);
+    console.log(result);
+    return result.rows[0].id_tickets; // Devuelve el ID del producto recién insertado
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
+module.exports = { addUser, 
+                  verifyLogin, 
+                  getUser, 
+                  getProduct, 
+                  getProducts, 
+                  getProductUsers,
+                  addProduct, 
+                  addTicket,};

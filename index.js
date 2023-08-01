@@ -23,6 +23,8 @@ const { addUser,
         getProduct,
         getProducts,
         getProductUsers,
+        addProduct,
+        addTicket,
         Auth,
       } = require('./db.js');
 const { error } = require('console');
@@ -42,7 +44,7 @@ app.listen(PORT, () => {
 });
 
 /* POST Usuarios */
-app.post('/usuarios', async (req, res) => {
+app.post('/users', async (req, res) => {
   try {
     const payload = req.body;
     console.log(payload.email);
@@ -127,6 +129,38 @@ app.get('/products/users/:id', async (req, res) => {
         catch (error) {
         res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
         }
+}
+);
+
+/* POST product */
+app.post('/products', async (req, res) => {
+  try {
+    const payload = req.body;
+    console.log(payload);
+    const product = await addProduct(payload);
+    console.log(product)
+    res.status(200).json(product);
+    console.log(res.status)
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
+});
+
+/* TICKETS */
+/* POST Ticket */
+app.post('/tickets', async (req, res) => {
+  try {
+    const payload = req.body;
+    console.log(payload);
+    const ticket = await addTicket(payload);
+    console.log(ticket)
+    res.status(200).json(ticket);
+    console.log(res.status)
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
 }
 );
 
