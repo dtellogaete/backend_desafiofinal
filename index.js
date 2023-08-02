@@ -25,6 +25,9 @@ const { addUser,
         getProductUsers,
         addProduct,
         addTicket,
+        getTicketId,
+        addContact,
+        addTicketDetail,
         Auth,
       } = require('./db.js');
 const { error } = require('console');
@@ -156,6 +159,54 @@ app.post('/tickets', async (req, res) => {
     const ticket = await addTicket(payload);
     console.log(ticket)
     res.status(200).json(ticket);
+    console.log(res.status)
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
+}
+);
+
+/* GET tickets por id_users */
+
+app.get('/tickets/users/:id', async (req, res) => {
+  try {
+      const { id} = req.params;    
+      const tickets = await getTicketId(1);
+      console.log(tickets);
+      res.status(200).json(tickets);      
+  } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
+});
+
+
+
+
+/* POST Ticket Detail */
+app.post('/ticketdetail', async (req, res) => {
+  try {
+    const payload = req.body;
+    const ticketdetail = await addTicketDetail(payload);
+    console.log(ticketdetail)
+    res.status(200).json(ticketdetail);
+    console.log(res.status)
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
+}
+);
+
+
+/*ADD CONTACT */
+app.post('/contact', async (req, res) => {
+  try {
+    const payload = req.body;
+    console.log(payload);
+    const contact = await addContact(payload);
+    console.log(contact)
+    res.status(200).json(contact);
     console.log(res.status)
   }
   catch (error) {

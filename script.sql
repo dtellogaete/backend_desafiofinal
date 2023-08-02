@@ -44,22 +44,11 @@ CREATE TABLE products (
 );
 
 /*==============================================================*/
-/* Table: shipping_cost                                         */
-/*==============================================================*/
-CREATE TABLE shipping_cost (
-   id_shipping          VARCHAR(255)         NOT NULL,
-   cost                 FLOAT8               NULL,
-   region               VARCHAR(255)         NULL,
-   CONSTRAINT pk_shipping_cost PRIMARY KEY (id_shipping)
-);
-
-/*==============================================================*/
 /* Table: tickets                                               */
 /*==============================================================*/
 CREATE TABLE tickets (
-   id_tickets           SERIAL               NOT NULL,
-   id_shipping          VARCHAR(255)         NULL,
-   id_users             INT4                 NULL,
+   id_tickets           SERIAL               NOT NULL,   
+   id_users             INT4                 NULL,   
    subtotal             FLOAT8               NULL,
    total                FLOAT8               NULL,
    contact              VARCHAR(255)         NULL,
@@ -69,6 +58,12 @@ CREATE TABLE tickets (
    razon_social         VARCHAR(255)         NULL,
    pay_method           VARCHAR(255)         NULL,
    status               VARCHAR(255)         NULL,
+   dateticket           INT8                 NULL,
+   doc_sii              VARCHAR(255)         NULL,
+   region               VARCHAR(255)         NULL,
+   city_shipping        VARCHAR(255)         NULL,
+   region_shipping      VARCHAR(255)         NULL,
+   address_shipping     VARCHAR(255)         NULL,
    CONSTRAINT pk_tickets PRIMARY KEY (id_tickets)
 );
 
@@ -79,6 +74,7 @@ CREATE TABLE ticket_details (
    id_ticket_details    SERIAL               NOT NULL,
    id_tickets           INT4                 NULL,
    id_products          INT4                 NULL,
+   quantity             INT4                 NULL,
    CONSTRAINT pk_ticket_details PRIMARY KEY (id_ticket_details)
 );
 
@@ -114,11 +110,6 @@ ALTER TABLE products
 ALTER TABLE tickets
    ADD CONSTRAINT fk_tickets_reference_users FOREIGN KEY (id_users)
       REFERENCES users (id_users)
-      ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-ALTER TABLE tickets
-   ADD CONSTRAINT fk_tickets_tiene_co_shipping FOREIGN KEY (id_shipping)
-      REFERENCES shipping_cost (id_shipping)
       ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE ticket_details

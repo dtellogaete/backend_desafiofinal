@@ -152,9 +152,8 @@ const addProduct = async (req) => {
 const addTicket = async (req) => {
   try {
     const query =
-      'INSERT INTO tickets (id_shipping, id_users, subtotal, total, contact, telephone, rut, city, razon_social, pay_method, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id_tickets';
+      'INSERT INTO tickets (id_users, subtotal, total, contact, telephone, rut, city, razon_social, pay_method, status, dateticket, doc_sii, region, city_shipping, region_shipping, address_shipping) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, \'Pendiente\', $10, $11, $12, $13, $14, $15) RETURNING id_tickets';
     const values = [
-      req.id_shipping,
       req.id_users,
       parseFloat(req.subtotal),
       parseFloat(req.total),
@@ -164,12 +163,30 @@ const addTicket = async (req) => {
       req.city,
       req.razon_social,
       req.pay_method,
-      req.status,
+      parseInt(req.dateticket),
+      req.doc_sii,
+      req.region,
+      req.city_shipping,
+      req.region_shipping,
+      req.address_shipping,
     ];
-    console.log(values);
+    console.log("tickets",values);
     const result = await pool.query(query, values);
-    console.log(result);
-    return result.rows[0].id_tickets; // Devuelve el ID del producto recién insertado
+    
+    return result.rows[0].id_tickets;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Obtener ticket por cliente 
+const getTicketId = async (req) => {
+  try {
+    const query = 'SELECT * FROM tickets WHERE id_users = $1 ';
+    const values = [req.id_users];
+    const res = await pool.query(query, values);
+    const tickets = res.rows;    
+    return tickets;
   } catch (error) {
     throw error;
   }
@@ -178,9 +195,34 @@ const addTicket = async (req) => {
 
 
 
+/* CONTACT */
+const addContact = async (req) => {
+  try {
+    const query = 'INSERT INTO contact (name, email, telephone, subject, message) VALUES ($1, $2, $3, $4, $5) RETURNING idcontact';
+    const values = [req.name, req.email, req.telephone, req.subject, req.message];
+    console.log(values);
+    const result = await pool.query(query, values);
+    console.log(result);
+    return result.rows[0].idcontact; 
+  } catch (error) {
+    throw error;
+  }
+};
 
+/* ticket detail */
 
-
+const addTicketDetail = async (req) => {
+  try {
+    const query = 'INSERT INTO ticket_details (id_tickets, id_products, quantity) VALUES ($1, $2, $3) RETURNING id_ticket_details';
+    const values = [req.id_tickets, req.id_products, req.quantity];
+    
+    const result = await pool.query(query, values);
+    
+    return result.rows[0].id_ticket_details;
+  } catch (error) {
+    throw error;
+  }
+};
 
 module.exports = { addUser, 
                   verifyLogin, 
@@ -189,4 +231,7 @@ module.exports = { addUser,
                   getProducts, 
                   getProductUsers,
                   addProduct, 
-                  addTicket,};
+                  addTicket,
+                  getTicketId,
+                  addContact,
+                  addTicketDetail,};
