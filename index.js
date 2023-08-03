@@ -24,6 +24,7 @@ const { addUser,
         getProducts,
         getProductUsers,
         addProduct,
+        deleteProduct,
         addTicket,
         getTicketId,
         addContact,
@@ -150,6 +151,19 @@ app.post('/products', async (req, res) => {
   }
 });
 
+/* DELETE product */
+app.delete('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await deleteProduct(id);
+    res.status(200).json(product);
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
+});
+
+
 /* TICKETS */
 /* POST Ticket */
 app.post('/tickets', async (req, res) => {
@@ -171,14 +185,17 @@ app.post('/tickets', async (req, res) => {
 
 app.get('/tickets/users/:id', async (req, res) => {
   try {
-      const { id} = req.params;    
-      const tickets = await getTicketId(1);
+      const { id } = req.params;
+        
+      const tickets = await getTicketId(id);
       console.log(tickets);
       res.status(200).json(tickets);      
   } catch (error) {
       res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
   }
 });
+
+
 
 
 

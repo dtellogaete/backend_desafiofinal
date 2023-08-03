@@ -148,6 +148,20 @@ const addProduct = async (req) => {
   }
 };
 
+// Delete producto
+const deleteProduct = async (req) => {
+  try {
+    const query = 'DELETE FROM products WHERE id_products = $1';
+    const values = [req];
+    const result = await pool.query(query, values);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+
+};
+
+
 // Comprar producto
 const addTicket = async (req) => {
   try {
@@ -182,8 +196,9 @@ const addTicket = async (req) => {
 // Obtener ticket por cliente 
 const getTicketId = async (req) => {
   try {
-    const query = 'SELECT * FROM tickets WHERE id_users = $1 ';
-    const values = [req.id_users];
+    const query = 'SELECT * FROM tickets where id_users = $1';
+    const values = [req];
+    
     const res = await pool.query(query, values);
     const tickets = res.rows;    
     return tickets;
@@ -231,6 +246,7 @@ module.exports = { addUser,
                   getProducts, 
                   getProductUsers,
                   addProduct, 
+                  deleteProduct,
                   addTicket,
                   getTicketId,
                   addContact,
