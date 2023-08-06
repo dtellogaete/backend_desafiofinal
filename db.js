@@ -68,18 +68,35 @@ const addUser = async (req) => {
       }
     };
   
-  /* Get User */
-  const getUser = async (req) => {
-    try {        
-      const query = 'SELECT * FROM users WHERE email = $1';
-      const values = [req];
-      const res = await pool.query(query, values);
-      const user = res.rows[0];
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  };
+/* Get User */
+const getUser = async (req) => {
+  try {        
+    const query = 'SELECT * FROM users WHERE email = $1';
+    const values = [req];
+    const res = await pool.query(query, values);
+    const user = res.rows[0];
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/*UPDATE user*/
+const editUser = async (req) => {
+  try {
+    const { name, lastname, email, rut, address, city, region, password, telephone, role, store_name, store_razon, store_rut, store_address, store_region, store_city, id_users } = req;
+
+    // Encriptar la contraseña utilizando bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const query = 'UPDATE users SET name=$1, lastname=$2, email=$3, rut=$4, address=$5, city=$6, region=$7, password=$8, telephone=$9, role=$10, store_name=$11, store_razon=$12, store_rut=$13, store_address=$14, store_region=$15, store_city=$16 WHERE id_users = $17';
+    const values = [name, lastname, email, rut, address, city, region, hashedPassword, telephone, role, store_name, store_razon, store_rut, store_address, store_region, store_city, id_users];
+    const res = await pool.query(query, values);
+    return res;
+    
+  } catch (error) {
+    throw error;
+  }
+};
 
 /* Products */
 /* Get Product */
@@ -148,6 +165,35 @@ const addProduct = async (req) => {
   }
 };
 
+// Editar producto
+const editProduct = async (req) => {
+  try {
+    const query =
+      'UPDATE  products  SET  name=$1, brand=$2, description=$3, variant=$4, price=$5, iva=$6, codebar=$7, sku=$8, photo=$9, stock=$10 WHERE id_products=$11';
+
+    const values = [
+      req.name,
+      req.brand,
+      req.description,
+      req.variant,
+      parseFloat(req.price),
+      parseFloat(req.iva),
+      req.codebar,
+      req.sku,
+      req.photo,
+      parseInt(req.stock),
+      req.id_products
+    ];
+    console.log(values);
+    const result = await pool.query(query, values);
+    console.log(result);
+    return result
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 // Delete producto
 const deleteProduct = async (req) => {
   try {
@@ -207,9 +253,6 @@ const getTicketId = async (req) => {
   }
 };
 
-
-
-
 /* CONTACT */
 const addContact = async (req) => {
   try {
@@ -242,10 +285,12 @@ const addTicketDetail = async (req) => {
 module.exports = { addUser, 
                   verifyLogin, 
                   getUser, 
+                  editUser,
                   getProduct, 
                   getProducts, 
                   getProductUsers,
                   addProduct, 
+                  editProduct,
                   deleteProduct,
                   addTicket,
                   getTicketId,

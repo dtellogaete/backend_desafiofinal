@@ -20,10 +20,12 @@ const crypto = require('crypto');
 const { addUser, 
         verifyLogin,  
         getUser,
+        editUser,
         getProduct,
         getProducts,
         getProductUsers,
         addProduct,
+        editProduct,
         deleteProduct,
         addTicket,
         getTicketId,
@@ -50,13 +52,12 @@ app.listen(PORT, () => {
 /* POST Usuarios */
 app.post('/users', async (req, res) => {
   try {
-    const payload = req.body;
-    console.log(payload.email);
-    const user = await addUser(payload);
-    res.status(200).json(user);
+      const payload = req.body;
+      const result = await addUser(payload);
+
+      res.status(201).json({ message: 'Usuario creado exitosamente', result }); 
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
-    res.status(500).send('Internal Server Error: ' + error.message);
+      res.status(500).json({ error: 'Error interno del servidor', errorMessage: error.message });
   }
 });
 
@@ -94,6 +95,17 @@ app.get('/users', async (req, res) => {
     const usuarios = await getUser(decodificado.email);
     res.status(200).json(usuarios);
     } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
+});
+
+/*Editar usuarios con PUT*/
+app.put('/users', async (req, res) => {
+  try {
+    const payload = req.body;
+    const user = await editUser(payload);
+    res.status(200).json(user);
+  } catch (error) {
     res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
   }
 });
@@ -143,6 +155,19 @@ app.post('/products', async (req, res) => {
     console.log(payload);
     const product = await addProduct(payload);
     console.log(product)
+    res.status(200).json(product);
+    console.log(res.status)
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+  }
+});
+
+/* UPDATE Editar Productos con PUT*/
+app.put('/products', async (req, res) => {
+  try {
+    const payload = req.body;
+    const product = await editProduct(payload);
     res.status(200).json(product);
     console.log(res.status)
   }
@@ -231,4 +256,6 @@ app.post('/contact', async (req, res) => {
   }
 }
 );
+
+module.exports = app
 
