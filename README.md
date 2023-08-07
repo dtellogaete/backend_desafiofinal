@@ -1,4 +1,8 @@
-**README del Backend de Marketplace**
+# Backend de Marketplace**
+
+## Autores
+* Gustavo Aguilar
+* Daniel Tello
 
 Este es el README para el backend del Marketplace. El backend está construido utilizando Node.js y el framework Express, y se comunica con una base de datos PostgreSQL. A continuación, se proporciona una descripción general del archivo `index.js` e información sobre la base de datos.
 
