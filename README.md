@@ -67,3 +67,41 @@ Breve Descripción de las Rutas en el Backend de Marketplace:
     - **POST Ticket Detail**: Agrega detalles específicos de productos a un ticket. Se espera un objeto JSON con detalles del ticket y productos asociados.
 
 7. **ADD CONTACT**: Agrega un nuevo contacto. Se espera un objeto JSON con detalles de contacto, como nombre, correo electrónico y mensaje.
+
+## Tests
+
+Este repositorio contiene pruebas automatizadas para verificar el comportamiento de distintas rutas y funcionalidades en la aplicación. A continuación se describen los cuatro tests incluidos:
+
+### 1. Obtener productos del usuario con id = 1
+
+Este test verifica la funcionalidad de obtener productos asociados a un usuario específico con el ID 1.
+
+1. Se realiza una solicitud GET a la ruta `/products/users/1` para obtener los productos del usuario con ID 1.
+2. Se verifica que el estado de respuesta sea 200 (éxito).
+3. Se verifica que la respuesta sea una instancia de un array.
+4. Se verifica que la cantidad de productos obtenidos sea mayor o igual a 0.
+
+### 2. Eliminar un producto con un id que no existe
+
+Este test verifica la respuesta al intentar eliminar un producto utilizando un ID inexistente.
+
+1. Se establece un token de autorización (JWT).
+2. Se realiza una solicitud DELETE a la ruta `/products/uno` para intentar eliminar un producto con ID inexistente.
+3. Se verifica que el estado de respuesta sea 500 (error interno del servidor).
+
+### 3. Agregar un nuevo usuario
+
+Este test verifica la funcionalidad de agregar un nuevo usuario a la base de datos.
+
+1. Se crea un objeto `nuevoUsuario` con los detalles de un nuevo usuario.
+2. Se realiza una solicitud POST a la ruta `/users` para agregar el nuevo usuario.
+3. Se verifica que el mensaje en la respuesta sea "Usuario creado exitosamente".
+4. Se verifica que el número de filas afectadas en la base de datos sea 1.
+
+### 4. Actualizar un usuario con id incorrecto
+
+Este test verifica la respuesta al intentar actualizar un usuario utilizando un ID incorrecto.
+
+1. Se establece un ID incorrecto y se crea un objeto `actUser` con detalles de actualización.
+2. Se realiza una solicitud PUT a la ruta `/users` para intentar actualizar el usuario con el ID incorrecto.
+3. Se verifica que el estado de respuesta sea 500 (error interno del servidor).
