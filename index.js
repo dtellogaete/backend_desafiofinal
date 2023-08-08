@@ -49,9 +49,7 @@ app.listen(PORT, () => {
     console.log(`Server is running in port: ${PORT}`);
 });
 
-app.ping('/', (req, res) => {
-  res.send('SELECT nOW()');
-});
+
 
 /* POST Usuarios */
 app.post('/users', async (req, res) => {

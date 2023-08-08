@@ -8,8 +8,21 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 /* Configuración de la conexión a la base de datos */
-const config = {  
+const config = {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  allowExitOnIdle: process.env.ALLOW_EXIT_ON_IDLE === 'true',
   conectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Esto desactiva la verificación de certificados (solo para desarrollo)
+    // Aquí debes proporcionar la ruta a los certificados que obtuviste
+    // ca: fs.readFileSync('/ruta/al/certificado/ca.pem'),
+    // cert: fs.readFileSync('/ruta/al/certificado/cert.pem'),
+    // key: fs.readFileSync('/ruta/al/certificado/key.pem'),
+  },
 };
 
 
