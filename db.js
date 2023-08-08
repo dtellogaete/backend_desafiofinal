@@ -15,7 +15,9 @@ const config = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   allowExitOnIdle: process.env.ALLOW_EXIT_ON_IDLE === 'true',
+  ssl: false,
 };
+
 
 const pool = new Pool(config);
 
