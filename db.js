@@ -8,14 +8,8 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 /* Configuración de la conexión a la base de datos */
-const config = {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  allowExitOnIdle: process.env.ALLOW_EXIT_ON_IDLE === 'true',
-  ssl: false,
+const config = {  
+  conectionString: process.env.DATABASE_URL,
 };
 
 
