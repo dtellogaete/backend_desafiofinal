@@ -24,6 +24,7 @@ const { addUser,
         getProduct,
         getProducts,
         getProductUsers,
+        getProductsStock,
         addProduct,
         editProduct,
         deleteProduct,
@@ -136,6 +137,21 @@ app.get('/products', async (req, res) => {
         }
     }
 );
+
+/* GET Products con stock */
+app.get('/productsstock', async (req, res) => {
+    try {
+        const products = await getProductsStock();
+        res.status(200).json(products);
+        }
+        catch (error) {
+        res.status(500).json({ error: 'Internal Server Error', errorMessage: error.message });
+        }
+    }
+);
+
+        
+
 
 /* GET Productos de Usuarios */
 app.get('/products/users/:id', async (req, res) => {

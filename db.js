@@ -133,6 +133,20 @@ const getProducts = async () => {
     }
 };
 
+/* Get Products with Stock */
+const getProductsStock = async () => {
+    try {
+        const query = 'SELECT * FROM products WHERE stock > 0 LIMIT 100';
+        const res = await pool.query(query);
+        const products = res.rows;
+        return products;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
 /* Get Product Users */
 const getProductUsers = async (id_users) => {
     try {
@@ -298,6 +312,7 @@ module.exports = { addUser,
                   getProduct, 
                   getProducts, 
                   getProductUsers,
+                  getProductsStock,
                   addProduct, 
                   editProduct,
                   deleteProduct,
@@ -305,3 +320,4 @@ module.exports = { addUser,
                   getTicketId,
                   addContact,
                   addTicketDetail,};
+                  
